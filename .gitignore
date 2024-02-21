@@ -1,3 +1,4 @@
 venv
 output
 sources/fsa_color
+.DS_Store
