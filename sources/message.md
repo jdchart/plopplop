@@ -1,0 +1,1 @@
+Create a new folder here and fill it with images
