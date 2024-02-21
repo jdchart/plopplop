@@ -2,3 +2,4 @@ venv
 output
 sources/fsa_color
 .DS_Store
+dvt_embed.pt
