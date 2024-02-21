@@ -1,6 +1,9 @@
 import os
 import json
 
+def scale(val, old_min, old_max, new_min, new_max):
+    return new_min + (((val - old_min) * (new_max - new_min)) / (old_max - old_min))
+
 def collect_files(path, accepted = []):
     final_list = []
     for root, dirs, files in os.walk(path):

@@ -12,7 +12,7 @@ from sklearn.cluster import KMeans
 
 SRC_FOLDER = os.path.join(os.getcwd(), "output", "embeddings", "fsa_color")
 OUT_FOLDER = os.path.join(os.getcwd(), "output", "embeddings", "fsa_color")
-NUM_CLUSTERS = 3
+NUM_CLUSTERS = 8
 VISUALIZE = True
 
 def cluster(data, num_clusters = 4):
@@ -57,6 +57,6 @@ def process():
     if VISUALIZE:
         scatter_vis_colour(original_data, clusters, colour_map)
 
-    utils.write_json(os.path.join(OUT_FOLDER, "file_map.json"), file_map)
+    utils.write_json(os.path.join(OUT_FOLDER, "file_map_with_clusters.json"), file_map)
 
 process()
