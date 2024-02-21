@@ -1,0 +1,49 @@
+"""
+01 CREATE EMBEDDINGS
+
+Use dvt to turn a folder of image files into embeddings.
+"""
+
+import os
+import utils
+import dvt
+import numpy as np
+
+SRC_FOLDER = os.path.join(os.getcwd(), "sources", "fsa_color", "images")
+OUT_FOLDER = os.path.join(os.getcwd(), "output", "embeddings", "fsa_color")
+
+def create_embedding(src, embedder):
+    img = dvt.load_image(src)
+    embedding = embedder.run(img)
+    return embedding["embedding"]
+
+def convert_to_np(embedding_list):
+    for i, embedding in enumerate(embedding_list):
+        if i == 0:
+            ret = embedding
+        else:
+            ret = np.vstack((ret, embedding))
+    return ret
+
+def process():
+    sources = utils.collect_files(SRC_FOLDER, ["jpg"])[:20]
+    print(f"Treating {len(sources)} image files...")
+
+    embedder = dvt.AnnoEmbed(os.path.join(os.getcwd(), "models", "dvt_embed.pt"))
+    embeddings = []
+    file_map = {}
+    for i, image in enumerate(sources):
+        print(f"Creating embedding for {os.path.splitext(image)[0]}")
+        embeddings.append(create_embedding(image, embedder))
+        file_map[i] = {"file_path" : image}
+
+    print("Converting to numpy array...")
+    embeddings_np = convert_to_np(embeddings)
+    
+    print("Saving...")
+    utils.write_json(os.path.join(OUT_FOLDER, "file_map.json"), file_map)
+    np.save(os.path.join(OUT_FOLDER, "embeddings.npy"), embeddings_np)
+
+    print("Done!")
+
+process()
